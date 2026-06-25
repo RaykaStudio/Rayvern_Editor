@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html id="rayka-html" lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Asccochi - Rayvern Editor</title>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <link href="font.css" rel="stylesheet">
+    <link
+        href="font2.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://lib.arvancloud.ir/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        :root {
+            --rayka-bg: #05060b;
+            --rayka-surface: rgba(16, 18, 32, 0.7);
+            --rayka-accent: #CFFDFF;
+            --rayka-text: #ffffff;
+            --rayka-secondary: #60627a;
+            --asccochi-border: rgba(207, 253, 255, 0.08);
+            --rayka-glow: rgba(207, 253, 255, 0.15);
+            --rayka-ease: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Space Grotesk', 'Almarai', sans-serif;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body.rayka-body {
+            font-family: 'Space Grotesk', 'Almarai', sans-serif;
+            background-color: var(--rayka-bg);
+            color: var(--rayka-text);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .asccochi-space-stage {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #0c0e1e 0%, #030408 100%);
+        }
+
+        .rayka-nebula-deep {
+            position: absolute;
+            width: 750px;
+            height: 750px;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.05) 0%, transparent 70%);
+            top: -200px;
+            left: -100px;
+            animation: rayka-nebula-orbit 25s linear infinite;
+        }
+
+        .rayka-nebula-cyan {
+            position: absolute;
+            width: 650px;
+            height: 650px;
+            background: radial-gradient(circle, rgba(207, 253, 255, 0.04) 0%, transparent 65%);
+            bottom: -150px;
+            right: -100px;
+            animation: rayka-nebula-orbit 20s linear infinite reverse;
+        }
+
+        @keyframes rayka-nebula-orbit {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .asccochi-star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: asccochi-twinkle linear infinite;
+        }
+
+        @keyframes asccochi-twinkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 0.9;
+                transform: scale(1.2);
+            }
+        }
+
+        .rayka-cosmic-dust {
+            position: absolute;
+            background: var(--rayka-accent);
+            border-radius: 50%;
+            opacity: 0.25;
+            animation: rayka-drift linear infinite;
+        }
+
+        @keyframes rayka-drift {
+            0% {
+                transform: translateY(105vh);
+            }
+
+            100% {
+                transform: translateY(-5vh);
+            }
+        }
+
+        .rayka-main-wrapper {
+            width: 100%;
+            max-width: 460px;
+            height: 90vh;
+            max-height: 720px;
+            display: none;
+            flex-direction: column;
+            position: relative;
+            z-index: 10;
+            animation: rayka-panel-intro 0.5s var(--rayka-ease) forwards;
+        }
+
+        @keyframes rayka-panel-intro {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .asccochi-top-left-actions {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            background: rgba(5, 6, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 3px;
+            display: flex;
+            gap: 2px;
+            border: 1px solid var(--asccochi-border);
+            z-index: 1000;
+            direction: ltr;
+        }
+
+        .rayka-lang-btn {
+            padding: 5px 12px;
+            border-radius: 9px;
+            border: none;
+            background: transparent;
+            color: var(--rayka-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .rayka-lang-btn.asccochi-active-lang {
+            background: var(--rayka-accent);
+            color: #05060b;
+            font-weight: 700;
+        }
+
+        .rayka-categories {
+            display: flex;
+            background: rgba(16, 18, 32, 0.6);
+            border: 1px solid var(--asccochi-border);
+            padding: 4px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            gap: 4px;
+        }
+
+        .rayka-cat-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--rayka-secondary);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .rayka-cat-btn.asccochi-active-tab {
+            background: rgba(207, 253, 255, 0.08);
+            color: var(--rayka-accent);
+        }
+
+        .rayka-app-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .asccochi-app-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--rayka-surface);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            border: 1px solid var(--asccochi-border);
+        }
+
+        .asccochi-header-img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        
+
+        .rayka-tab-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rayka-tab-pane {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+        }
+
+        .rayka-tab-pane.asccochi-visible-pane {
+            display: flex;
+        }
+
+        .rayka-ios-card {
+            background: var(--rayka-surface);
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--asccochi-border);
+        }
+
+    .rayka-ios-card.asccochi-dynamic-fill {
+        flex: 2.0;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0;
+    }
+
+    .asccochi-intro-sub{
+        position: relative;
+        margin: 5px;
+        top: 12px;
+        color: rgba(255, 255, 255, 0.774);
+    }
+
+        .rayka-label-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            color: var(--rayka-accent);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .asccochi-drop-area {
+            border: 1px dashed var(--asccochi-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s var(--rayka-ease);
+        }
+
+        .asccochi-drop-area:hover,
+        .asccochi-drop-area.asccochi-dragging {
+            border-color: var(--rayka-accent);
+            background: rgba(207, 253, 255, 0.035);
+            transform: translateY(-1px);
+        }
+
+        .rayka-input-wrapper {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rayka-input-field {
+            background: rgba(5, 6, 11, 0.45);
+            border: 1px solid var(--asccochi-border);
+            border-radius: 10px;
+            padding: 10px;
+            color: #fff;
+            width: 100%;
+            outline: none;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .asccochi-file-list {
+            flex: 1;
+            overflow-y: auto;
+            margin: 8px 0;
+            padding-right: 4px;
+        }
+
+        .asccochi-file-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .asccochi-file-list::-webkit-scrollbar-thumb {
+            background: var(--asccochi-border);
+            border-radius: 10px;
+        }
+
+        .asccochi-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(5, 6, 11, 0.25);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .asccochi-file-original {
+            display: block;
+            color: var(--rayka-secondary);
+            text-decoration: line-through;
+            font-size: 10px;
+        }
+
+        .asccochi-file-new {
+            display: block;
+            color: var(--rayka-accent);
+            font-weight: 500;
+        }
+
+        .asccochi-btn-primary {
+            width: 100%;
+            background: var(--rayka-accent);
+            color: #05060b;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .asccochi-preview-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .asccochi-btn-clear {
+            width: 46px;
+            height: 46px;
+            border: 1px solid rgba(255, 59, 48, 0.22);
+            background: rgba(255, 59, 48, 0.08);
+            color: #ff453a;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s var(--rayka-ease);
+        }
+
+        .asccochi-btn-clear:hover {
+            background: rgba(255, 59, 48, 0.14);
+            border-color: rgba(255, 59, 48, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .asccochi-btn-clear:active {
+            transform: translateY(0);
+        }
+
+        .asccochi-btn-primary:disabled {
+            opacity: 0.3;
+        }
+
+        .asccochi-badge {
+            background: rgba(207, 253, 255, 0.06);
+            color: var(--rayka-accent);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-right: 4px;
+        }
+
+        .rayka-status-msg {
+            margin-top: 6px;
+            font-size: 11px;
+            text-align: center;
+            border-radius: 8px;
+            padding: 6px;
+            min-height: 28px;
+        }
+
+        .asccochi-success {
+            color: #34c759;
+            background: rgba(52, 199, 89, 0.05);
+        }
+
+        .asccochi-error {
+            color: #ff3b30;
+            background: rgba(255, 59, 48, 0.05);
+        }
+
+        /* Intro & Team */
+        .asccochi-intro-screen {
+            position: relative;
+            z-index: 100;
+            text-align: center;
+            max-width: 400px;
+            background: var(--rayka-surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--asccochi-border);
+            padding: 36px 28px;
+            border-radius: 24px;
+        }
+
+        .rayka-team-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .rayka-member-card {
+            background: rgba(5, 6, 11, 0.35);
+            border: 1px solid var(--asccochi-border);
+            border-radius: 16px;
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        .rayka-avatar-square {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .rayka-social-square-btn {
+            width: 32px;
+            height: 32px;
+            background: #cffdff0d;
+            border: 1px solid #ffffff0a;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #CFFDFF;
+            margin: 10px 5px;
+            transition: 0.3s;
+        }
+
+        .rayka-social-square-btn:hover{
+            background: #cffdff2d;
+            border: 1px solid #ffffff18;
+        }
+
+        .rayka-team-donate-btn {
+            background: #cffdff1a;
+            border: 1px solid var(--rayka-accent);
+            color: var(--rayka-accent);
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: 0.4s;
+        }
+
+         .rayka-team-donate-btn:hover{
+            background: #cffdff33;
+         }
+
+        .rayka-fa-word {
+            font-family: 'Almarai', sans-serif !important;
+        }
+        .asccochi-intro-btn {
+            width: 100%;
+            padding: 14px 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #CFFDFF 0%, #9CE9EE 100%);
+            color: #05060b;
+            border: 3px solid #ffffffa6;
+            font-family: 'Almarai', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 22px;
+            /* transition: 0.25s cubic-bezier(0.25, 1, 0.5, 1); */
+            transition: 1s;
+            /* box-shadow: 0 6px 18px rgba(207, 253, 255, 0.25); */
+        }
+
+        .asccochi-intro-btn:hover {
+            background:  #609ea1;
+            color: #05060b;
+        }
+
+        .asccochi-intro-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(207, 253, 255, 0.25);
+        }
+        .asccochi-intro-btn { background: var(--rayka-accent); color: #05060b; border: none; padding: 12px 36px; border-radius: 14px; font-weight: 700; cursor: pointer; }
+        .asccochi-file-list {
+            flex: 1;
+            min-height: 0;
+            max-height: 286px;
+            overflow-y: auto;
+            margin: 8px 0;
+            padding-right: 4px;
+        }
+
+
+        .asccochi-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 52px;
+            padding: 10px;
+            background: rgba(5, 6, 11, 0.25);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+        .asccochi-preview-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+        .rayka-status-msg {
+            margin-top: 6px;
+            font-size: 11px;
+            text-align: center;
+            border-radius: 8px;
+            padding: 6px;
+            min-height: 28px;
+            flex-shrink: 0;
+        }
+        .rayka-ios-card.asccochi-dynamic-fill {
+            flex: 2.0;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0;
+        }
+
+        .asccochi-file-list {
+            flex: 1;
+            min-height: 0;
+            max-height: 286px;
+            overflow-y: auto;
+            margin: 8px 0;
+            padding-right: 4px;
+        }
+
+        .asccochi-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 52px;
+            padding: 10px;
+            background: rgba(5, 6, 11, 0.25);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .rayka-member-role{
+            margin: 5px ;
+            color: #9CE9EE;
+        }
+
+        .asccochi-preview-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .rayka-status-msg {
+            margin-top: 6px;
+            font-size: 11px;
+            text-align: center;
+            border-radius: 8px;
+            padding: 6px;
+            min-height: 28px;
+            flex-shrink: 0;
+        }
+        .rayka-tab-container {
+            flex: 1;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-height: 0;
+            padding-bottom: 4px;
+        }
+
+        .rayka-tab-pane {
+            position: relative;
+            inset: auto;
+            display: none;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        .rayka-tab-pane.asccochi-visible-pane {
+            display: flex;
+        }
+
+        .rayka-ios-card.asccochi-dynamic-fill {
+            flex: 0 0 auto;
+            min-height: 430px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0;
+        }
+
+        .asccochi-file-list {
+            flex: 0 0 auto;
+            height: 290px;
+            max-height: 290px;
+            overflow-y: auto;
+            margin: 8px 0;
+            padding-right: 4px;
+        }
+
+        .asccochi-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 52px;
+            padding: 10px;
+            background: rgba(5, 6, 11, 0.25);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 12px;
+        }
+
+        .asccochi-preview-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .rayka-status-msg {
+            margin-top: 6px;
+            font-size: 11px;
+            text-align: center;
+            border-radius: 8px;
+            padding: 6px;
+            min-height: 28px;
+            flex-shrink: 0;
+        }
+        .asccochi-file-list {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            margin: 8px 0;
+            padding-right: 6px;
+            scroll-behavior: smooth;
+        }
+
+        .asccochi-file-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .asccochi-file-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .asccochi-file-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(
+                180deg,
+                rgba(207,253,255,0.5),
+                rgba(207,253,255,0.2)
+            );
+            border-radius: 10px;
+        }
+
+        .asccochi-file-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(207,253,255,0.8);
+        }
+
+
+    </style>
+</head>
+
+<body class="rayka-body">
+
+    <div class="asccochi-space-stage">
+        <div class="rayka-nebula-deep"></div>
+        <div class="rayka-nebula-cyan"></div>
+    </div>
+
+    <div class="asccochi-top-left-actions">
+        <button data-lang="en" class="rayka-lang-btn" onclick="setLang('en')">English</button>
+        <button data-lang="fa" class="rayka-lang-btn" onclick="setLang('fa')">فارسی</button>
+    </div>
+
+    <div class="asccochi-intro-screen" id="asccochi-intro-screen">
+        <h2 class="asccochi-intro-title rayka-fa-word">این برنامه برای تو درست شده که راحت تر باشی خوشگله ✨ 🚀</h2>
+        <p class="asccochi-intro-sub">به یاد تمام کسانی که در بین ما نیستند 🖤</p>
+        <button class="asccochi-intro-btn rayka-fa-word" onclick="startApp()">بزن بریم!</button>
+    </div>
+
+    <div class="rayka-main-wrapper" id="rayka-main-wrapper">
+        <header class="rayka-app-header">
+            <div class="asccochi-app-icon">
+                <img src="https://uploadkon.ir/uploads/723b24_261429126f-33b8-4000-b120-c217735956c4.png"
+                    class="asccochi-header-img" alt="Logo">
+            </div>
+            <h1 class="rayka-title" data-i18n="title">رایورن ادیتور</h1>
+            <p class="rayka-subtitle" data-i18n="subtitle">سریع، ایمن و به سبک</p>
+        </header>
+
+        <nav class="rayka-categories">
+            <button id="tab-home-btn" class="rayka-cat-btn asccochi-active-tab" onclick="switchTab('home')">
+                <i class="fa-solid fa-house"></i>
+                <span data-i18n="catHome">خانه</span>
+            </button>
+            <button id="tab-team-btn" class="rayka-cat-btn" onclick="switchTab('team')">
+                <i class="fa-solid fa-users"></i>
+                <span data-i18n="catTeam">تیم ما</span>
+            </button>
+        </nav>
+
+        <div class="rayka-tab-container">
+            <div id="tab-home-content" class="rayka-tab-pane asccochi-visible-pane">
+                <div class="rayka-ios-card">
+                    <div class="rayka-label-group">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span data-i18n="label1">انتخاب منابع</span>
+                    </div>
+                    <div class="asccochi-drop-area" id="dropZone">
+                        <i class="fa-solid fa-plus"
+                            style="font-size: 18px; margin-bottom: 6px; color: var(--rayka-accent)"></i>
+                        <p data-i18n="dropH" style="font-weight: bold; font-size: 13px;">فایل‌ها را اینجا رها کنید</p>
+                        <p data-i18n="dropP" style="font-size: 11px; color: var(--rayka-secondary);">یا برای انتخاب کلیک
+                            کنید</p>
+                    </div>
+                </div>
+
+                <div class="rayka-ios-card">
+                    <div class="rayka-label-group">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span data-i18n="label2">تغییر نام</span>
+                    </div>
+                    <div class="rayka-input-wrapper">
+                        <input type="text" id="oldName" class="rayka-input-field" placeholder="اسم قدیمی"
+                            autocomplete="off">
+                        <div class="asccochi-rename-arrow"><i class="fa-solid fa-chevron-left"
+                                style="color: var(--rayka-accent); font-size: 11px;"></i></div>
+                        <input type="text" id="newName" class="rayka-input-field" placeholder="اسم جدید"
+                            autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="rayka-ios-card asccochi-dynamic-fill" id="previewCard" style="display:none">
+                    <div class="rayka-label-group">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span data-i18n="label3">پیش‌نمایش تغییرات</span>
+                    </div>
+                    <div class="rayka-badge-container">
+                        <span class="asccochi-badge" id="totalBadge">0 فایل</span>
+                        <span class="asccochi-badge" id="changedBadge"
+                            style="background: rgba(52, 199, 89, 0.1); color: #34c759;">0 تغییر</span>
+                    </div>
+                    <div class="asccochi-file-list" id="fileList"></div>
+                    <div class="asccochi-preview-actions">
+                        <button class="asccochi-btn-primary" id="dlBtn" onclick="saveToOutput()">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span data-i18n="btn">ذخیره در پوشه خروجی</span>
+                        </button>
+
+                        <button class="asccochi-btn-clear" id="clearBtn" onclick="clearFiles()" title="Clear">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div id="statusMsg" class="rayka-status-msg"></div>
+                </div>
+            </div>
+
+            <div id="tab-team-content" class="rayka-tab-pane">
+                <div class="rayka-ios-card asccochi-dynamic-fill">
+                    <div class="rayka-team-grid">
+                        <div class="rayka-member-card">
+                            <img src="https://my.uupload.ir/dl/5L1JB6Qe" class="rayka-avatar-square" alt="Y_G_A">
+                            <div class="rayka-member-name">Y_G_A</div>
+                            <div class="rayka-member-role">BACKEND DEVELOPER</div>
+                            <a href="https://github.com/the-yga" target="_blank" class="rayka-social-square-btn"><i
+                                    class="fa-brands fa-github"></i></a>
+                            <a href="https://discord.gg/jTpw3TxDev" target="_blank" class="rayka-social-square-btn"><i
+                                    class="fa-brands fa-discord"></i></a>
+                        </div>
+                        <div class="rayka-member-card">
+                            <img src="https://my.uupload.ir/dl/wZKMxXbB" class="rayka-avatar-square" alt="Asccochi">
+                            <div class="rayka-member-name">Asccochi</div>
+                            <div class="rayka-member-role">UI DEVELOPER</div>
+                            <a href="https://github.com/RaykaStudio" target="_blank" class="rayka-social-square-btn"><i
+                                    class="fa-brands fa-github"></i></a>
+                            <a href="https://discord.gg/TcpAm9t8Cw" target="_blank" class="rayka-social-square-btn"><i
+                                    class="fa-brands fa-discord"></i></a>
+                        </div>
+                    </div>
+                    <div style="margin-top:auto; text-align:center;">
+                        <p data-i18n="donateDesc"
+                            style="font-size: 11px; color: var(--rayka-secondary); line-height: 1.6;">مشتی حمایت کنی دمت گرم نکنی هم فرقی نداره به هر حال این برنامه رایگانه.اما اگر میخوای آپدیت های بهتر در بخش های مختلف بیاد که خفن تر شه این برنامه حمایت کن 😊🤍</p>
+                        <a href="https://www.coffeebede.com/theyga" target="_blank" class="rayka-team-donate-btn">
+                            <i class="fa-solid fa-heart"></i>
+                            <span data-i18n="donateBtn">حمایت مالی</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            fa: {
+                title: "رایورن ادیتور",
+                subtitle: "سریع، ایمن و سبک",
+                catHome: "خانه",
+                catTeam: "تیم ما",
+                label1: "انتخاب منابع",
+                label2: "تغییر نام",
+                label3: "پیش‌نمایش تغییرات",
+                dropH: "فایل‌ها را اینجا رها کنید",
+                dropP: "یا برای انتخاب کلیک کنید",
+                oldP: "اسم قدیمی",
+                newP: "اسم جدید",
+                btn: "ذخیره در پوشه خروجی",
+                donateDesc: "مشتی حمایت کنی دمت گرم نکنی هم فرقی نداره به هر حال این برنامه رایگانه.اما اگر میخوای آپدیت های بهتر در بخش های مختلف بیاد که خفن تر شه این برنامه حمایت کن 😊🤍",
+                donateBtn: "حمایت مالی",
+                total: "فایل",
+                change: "تغییر",
+                empty: "فایلی انتخاب نشده است",
+                arrow: "fa-chevron-left",
+                dir: "rtl"
+            },
+            en: {
+                title: "Rayvern Editor",
+                subtitle: "Fast, safe and stylish",
+                catHome: "Home",
+                catTeam: "Team",
+                label1: "Select Sources",
+                label2: "Rename",
+                label3: "Preview Changes",
+                dropH: "Drop files here",
+                dropP: "or click to select",
+                oldP: "Old name",
+                newP: "New name",
+                btn: "Save to Output Folder",
+                donateDesc: "Your support keeps us going 🚀",
+                donateBtn: "Donate Now",
+                total: "Files",
+                change: "Changes",
+                empty: "No files selected",
+                arrow: "fa-chevron-right",
+                dir: "ltr"
+            }
+        };
+
+        let currentLang = 'fa';
+        let files = [];
+
+        const dropZone = document.getElementById('dropZone');
+        const oldIn = document.getElementById('oldName');
+        const newIn = document.getElementById('newName');
+        const fileList = document.getElementById('fileList');
+        const previewCard = document.getElementById('previewCard');
+
+        function startApp() {
+            document.getElementById('asccochi-intro-screen').style.display = 'none';
+            document.getElementById('rayka-main-wrapper').style.display = 'flex';
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.rayka-tab-pane').forEach(p => p.classList.remove('asccochi-visible-pane'));
+            document.querySelectorAll('.rayka-cat-btn').forEach(b => b.classList.remove('asccochi-active-tab'));
+
+            document.getElementById(`tab-${tab}-content`).classList.add('asccochi-visible-pane');
+            document.getElementById(`tab-${tab}-btn`).classList.add('asccochi-active-tab');
+        }
+
+        function setLang(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('rayka-html').dir = t.dir;
+
+            // Update Text
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+
+            oldIn.placeholder = t.oldP;
+            newIn.placeholder = t.newP;
+
+            document.querySelectorAll('.rayka-lang-btn').forEach(b => b.classList.remove('asccochi-active-lang'));
+            document.querySelector(`[data-lang="${lang}"]`).classList.add('asccochi-active-lang');
+
+            const arrow = document.querySelector('.asccochi-rename-arrow i');
+            if (arrow) arrow.className = `fa-solid ${t.arrow}`;
+
+            render();
+        }
+
+        function renamed(name) {
+            const o = oldIn.value;
+            const n = newIn.value;
+            if (!o) return name;
+            return name.split(o).join(n);
+        }
+        function handleDroppedFiles(fileListFromDrop) {
+            const dropped = Array.from(fileListFromDrop || []);
+
+            if (!dropped.length) return;
+
+            files = dropped.map(file => ({
+                name: file.name,
+                file: file,
+                dropped: true
+            }));
+
+            previewCard.style.display = 'flex';
+            render();
+        }
+
+        async function chooseFilesFromApp() {
+            if (window.pywebview && window.pywebview.api) {
+                const selected = await window.pywebview.api.choose_files();
+                if (selected && selected.length > 0) {
+                    files = selected;
+                    previewCard.style.display = 'flex';
+                    render();
+                }
+            }
+        }
+
+        function render() {
+            const t = translations[currentLang];
+            const changedCount = files.filter(f => renamed(f.name) !== f.name).length;
+
+            document.getElementById('totalBadge').textContent = `${files.length} ${t.total}`;
+            document.getElementById('changedBadge').textContent = `${changedCount} ${t.change}`;
+
+            if (files.length === 0) {
+                fileList.innerHTML = `<div style="text-align:center; padding:20px; color:var(--rayka-secondary)">${t.empty}</div>`;
+                return;
+            }
+
+            fileList.innerHTML = files.map(f => {
+                const newName = renamed(f.name);
+                const isChanged = newName !== f.name;
+
+                return `
+                <div class="asccochi-file-item">
+                    <div style="min-width:0; flex:1">
+                        <span class="asccochi-file-original">${f.name}</span>
+                        <span class="asccochi-file-new" style="color:${isChanged ? 'var(--rayka-accent)' : 'var(--rayka-secondary)'}">${newName}</span>
+                    </div>
+                    <i class="fa-solid ${isChanged ? 'fa-check' : 'fa-minus'}"
+                    style="color:${isChanged ? '#34c759' : 'var(--rayka-secondary)'}"></i>
+                </div>
+                `;
+            }).join('');
+        }
+
+
+        function readDroppedFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    const result = reader.result || "";
+                    const base64 = String(result).split(",")[1];
+
+                    resolve({
+                        name: file.name,
+                        data: base64
+                    });
+                };
+
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function saveToOutput() {
+            const status = document.getElementById('statusMsg');
+            const btn = document.getElementById('dlBtn');
+
+            if (!files.length || !window.pywebview || !window.pywebview.api) return;
+
+            btn.disabled = true;
+            status.className = "rayka-status-msg";
+            status.textContent = currentLang === 'fa' ? "در حال ذخیره..." : "Saving...";
+
+            try {
+                const payload = [];
+
+                for (const f of files) {
+                    if (f.dropped && f.file) {
+                        const droppedData = await readDroppedFileAsBase64(f.file);
+
+                        payload.push({
+                            name: droppedData.name,
+                            newName: renamed(f.name),
+                            data: droppedData.data,
+                            dropped: true
+                        });
+                    } else {
+                        payload.push({
+                            path: f.path,
+                            newName: renamed(f.name),
+                            dropped: false
+                        });
+                    }
+                }
+
+                const result = await window.pywebview.api.save_files(payload);
+
+                if (result.success) {
+                    status.className = "rayka-status-msg asccochi-success";
+                    status.textContent = currentLang === 'fa'
+                        ? `${result.count} فایل با موفقیت ذخیره شد`
+                        : `${result.count} files saved successfully`;
+                } else {
+                    status.className = "rayka-status-msg asccochi-error";
+                    status.textContent = result.error || "Save failed";
+                }
+            } catch (e) {
+                status.className = "rayka-status-msg asccochi-error";
+                status.textContent = "Error: " + e;
+            }
+
+            btn.disabled = false;
+        }
+        function clearFiles() {
+            files = [];
+
+            if (fileList) {
+                fileList.innerHTML = "";
+            }
+
+            if (previewCard) {
+                previewCard.style.display = "none";
+            }
+
+            const status = document.getElementById("statusMsg");
+            if (status) {
+                status.className = "rayka-status-msg";
+                status.textContent = "";
+            }
+
+            const totalBadge = document.getElementById("totalBadge");
+            const changedBadge = document.getElementById("changedBadge");
+
+            if (totalBadge) {
+                totalBadge.textContent = `0 ${translations[currentLang].total}`;
+            }
+
+            if (changedBadge) {
+                changedBadge.textContent = `0 ${translations[currentLang].change}`;
+            }
+        }
+
+        function createSpace() {
+            const stage = document.querySelector('.asccochi-space-stage');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'asccochi-star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = (Math.random() * 2 + 1) + 'px';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                stage.appendChild(star);
+            }
+        }
+
+        dropZone.onclick = chooseFilesFromApp;
+        oldIn.oninput = render;
+        newIn.oninput = render;
+
+        window.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('asccochi-dragging'); });
+        window.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove('asccochi-dragging'); });
+        window.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.classList.remove('asccochi-dragging');
+
+            if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+                handleDroppedFiles(e.dataTransfer.files);
+            }
+        });
+
+        createSpace();
+        setLang('fa');
+        window.startApp = startApp;
+        window.switchTab = switchTab;
+        window.setLang = setLang;
+        window.saveToOutput = saveToOutput;
+        window.clearFiles = clearFiles;
+
+    </script>
+</body>
+
+</html>
