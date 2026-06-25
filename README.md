@@ -1,4 +1,4 @@
-# 🚀 Rayvern
+# 🚀 Rayvern editor
 
 A simple and efficient tool for batch file renaming and text replacement.
 
